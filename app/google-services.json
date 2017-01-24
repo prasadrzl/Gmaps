@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "208245426312",
+    "firebase_url": "https://gmappro-1483525256896.firebaseio.com",
+    "project_id": "gmappro-1483525256896",
+    "storage_bucket": "gmappro-1483525256896.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:208245426312:android:906b4c74d0c8ddaf",
+        "android_client_info": {
+          "package_name": "gmaps.com.gmaps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "208245426312-r1h2ho7oj62vcbvkv6fbnso9ovk3s6f3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxRuMK3mHUn0EE8COmmhD4S-1kJKaBDHA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
