@@ -1,7 +1,7 @@
 package gmaps.com.gmaps.modules;
 
 import dagger.Module;
-import gmaps.com.gmaps.network.WebApiService;
+import gmaps.com.gmaps.network.GitApiService;
 import gmaps.com.gmaps.presenters.HomePresenter;
 
 /**
@@ -11,7 +11,7 @@ import gmaps.com.gmaps.presenters.HomePresenter;
 @Module(includes = {NetworkModule.class})
 public class PresenterModule {
 
-    public HomePresenter provideHomePresenter(WebApiService webApiService) {
+    public HomePresenter provideHomePresenter(GitApiService webApiService) {
         return new HomePresenter(webApiService);
     }
 }

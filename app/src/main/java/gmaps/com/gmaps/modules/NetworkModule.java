@@ -16,6 +16,7 @@ import dagger.Module;
 import dagger.Provides;
 import gmaps.com.gmaps.base.Constants;
 import gmaps.com.gmaps.network.GitApiService;
+import gmaps.com.gmaps.network.MoviesApiService;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -62,12 +63,27 @@ public class NetworkModule {
         GsonBuilder gsonBuilder = new GsonBuilder();
         return gsonBuilder.create();
     }
-    @Named("git")
+
+
+    @Provides
+    @Named("git_url")
+    @Singleton
+    String provideMoviesBaseUrl() {
+        return Constants.BASE_MOVIES_URL;
+    }
+
+    @Provides
+    @Named("movies_url")
+    @Singleton
+    String provideGitBaseUrl() {
+        return Constants.BASE_GIT_URL;
+    }
+
     @Provides
     @Singleton
-    Retrofit provideRetrofit(OkHttpClient okHttpClient, Gson gson @Named("")) {
+    Retrofit provideGitRetrofit(OkHttpClient okHttpClient, Gson gson,@Named("git_url") String baseUrl) {
         return new Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL)
+                .baseUrl(baseUrl)
                 .client(okHttpClient)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
@@ -75,7 +91,23 @@ public class NetworkModule {
     }
 
     @Provides
-    GitApiService provideWebApiService(Retrofit retrofit) {
+    @Singleton
+    Retrofit provideRetrofit(OkHttpClient okHttpClient, Gson gson,@Named("movies_url") String baseUrl) {
+        return new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .client(okHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+    }
+
+    @Provides
+    GitApiService provideGitApiService(Retrofit retrofit) {
         return retrofit.create(GitApiService.class);
+    }
+
+    @Provides
+    MoviesApiService provideMoviesApiService(Retrofit retrofit) {
+        return retrofit.create(MoviesApiService.class);
     }
 }

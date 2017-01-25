@@ -19,7 +19,6 @@ import gmaps.com.gmaps.GmapApplication;
 import gmaps.com.gmaps.R;
 import gmaps.com.gmaps.base.BaseActivity;
 import gmaps.com.gmaps.models.GitHubRepos;
-import gmaps.com.gmaps.network.WebApiService;
 import gmaps.com.gmaps.presenters.HomePresenter;
 import gmaps.com.gmaps.views.HomeView;
 import timber.log.Timber;
@@ -36,10 +35,6 @@ public class GHomeActivity extends BaseActivity implements
 
     @Inject
     HomePresenter homePresenter;
-
-    @Inject
-    WebApiService apiService;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
