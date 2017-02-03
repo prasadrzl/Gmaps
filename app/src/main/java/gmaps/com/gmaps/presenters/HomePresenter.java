@@ -60,7 +60,7 @@ public class HomePresenter extends BasePresenterImp<HomeView> {
         homeView = getView();
         if (homeView != null) {
             homeView.showProgress();
-            compositeSubscription = new CompositeSubscription();
+
             //getDataFromGithub();
             //getDataFromSquare();
             getDataFromImdbMovies();
