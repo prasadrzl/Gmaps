@@ -1,5 +1,7 @@
 package gmaps.com.gmaps.views.home.activity;
 
+import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -7,20 +9,32 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import gmaps.com.gmaps.GmapApplication;
 import gmaps.com.gmaps.R;
 import gmaps.com.gmaps.base.BaseActivity;
-import gmaps.com.gmaps.models.GitHubRepos;
+import gmaps.com.gmaps.listeners.OnRecycleViewItemClickListener;
+import gmaps.com.gmaps.models.SkuWithCurrency;
+import gmaps.com.gmaps.models.github.GitHubRepos;
+import gmaps.com.gmaps.models.imdbmovies.ImdbMovies;
+import gmaps.com.gmaps.models.square.Venues;
 import gmaps.com.gmaps.presenters.HomePresenter;
 import gmaps.com.gmaps.views.HomeView;
+import gmaps.com.gmaps.views.TransactionRecyclerViewAdapter;
 import timber.log.Timber;
 
 /**
@@ -29,17 +43,23 @@ import timber.log.Timber;
 
 public class GHomeActivity extends BaseActivity implements
         HomeView, SwipeRefreshLayout.OnRefreshListener,
-        NavigationView.OnNavigationItemSelectedListener {
+        NavigationView.OnNavigationItemSelectedListener,
+        OnRecycleViewItemClickListener {
 
     private static final String TAG = GHomeActivity.class.getName();
 
     @Inject
     HomePresenter homePresenter;
+    @BindView(R.id.recylcerView)
+    RecyclerView recylcerView;
+    private Map<String, List<SkuWithCurrency>> transactionMap;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_drawer);
+        ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -94,6 +114,14 @@ public class GHomeActivity extends BaseActivity implements
                 homePresenter.getReposData();
                 break;
             case R.id.nav_gallery:
+                AssetManager assetManager = getAssets();
+                try {
+                    transactionMap = homePresenter.getFileData(assetManager.open("transactions.json"));
+                    setUpRecyclerView();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 break;
             case R.id.nav_slideshow:
                 break;
@@ -107,6 +135,16 @@ public class GHomeActivity extends BaseActivity implements
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void setUpRecyclerView() {
+        TransactionRecyclerViewAdapter transactionRecyclerViewAdapter = new
+                TransactionRecyclerViewAdapter(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recylcerView.setLayoutManager(linearLayoutManager);
+        transactionRecyclerViewAdapter.setTransactionMapData(transactionMap);
+        recylcerView.setAdapter(transactionRecyclerViewAdapter);
+        transactionRecyclerViewAdapter.setOnRecyclerViewItemClickListener(this);
     }
 
 
@@ -131,6 +169,16 @@ public class GHomeActivity extends BaseActivity implements
     }
 
     @Override
+    public void showVenuContent(Venues venues) {
+        Timber.i(TAG + "Square Data : %s", venues.toString());
+    }
+
+    @Override
+    public void showMovieContent(ImdbMovies imdbMovies) {
+        Timber.i(TAG + "Imdb Movies : %s", imdbMovies.toString());
+    }
+
+    @Override
     public void onRefresh() {
 
     }
@@ -141,5 +189,13 @@ public class GHomeActivity extends BaseActivity implements
             homePresenter.detachView();
         }
         super.onDestroy();
+    }
+
+    @Override
+    public void setOnRecycleViewItemClickListener(int position, String skuName) {
+        Intent intent = new Intent(GHomeActivity.this, ConverationRateActivity.class);
+        intent.putParcelableArrayListExtra(getResources().getString(R.string.curreny_list),
+                new ArrayList<>(transactionMap.get(skuName)));
+        startActivity(intent);
     }
 }

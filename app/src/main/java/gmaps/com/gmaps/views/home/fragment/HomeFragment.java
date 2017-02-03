@@ -31,4 +31,7 @@ public class HomeFragment extends MvpFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
+
+
+
 }

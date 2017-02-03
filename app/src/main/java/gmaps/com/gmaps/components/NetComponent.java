@@ -5,6 +5,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 import gmaps.com.gmaps.modules.AppModule;
 import gmaps.com.gmaps.modules.NetworkModule;
+import gmaps.com.gmaps.views.home.activity.ConverationRateActivity;
 import gmaps.com.gmaps.views.home.activity.GHomeActivity;
 import gmaps.com.gmaps.views.home.activity.GMapHomeActivity;
 
@@ -16,6 +17,6 @@ import gmaps.com.gmaps.views.home.activity.GMapHomeActivity;
 @Component(modules = {AppModule.class, NetworkModule.class})
 public interface NetComponent {
     void inject(GHomeActivity activity);
-
     void inject(GMapHomeActivity activity);
+    void inject(ConverationRateActivity activity);
 }

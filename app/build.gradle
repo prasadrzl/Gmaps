@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 25
@@ -63,6 +64,7 @@ dependencies {
     compile 'com.google.android.gms:play-services:9.0.0'
     compile 'com.android.support:design:25.1.0'
 
+
     //Firebase
     compile 'com.google.firebase:firebase-core:9.0.0'
     compile 'com.google.firebase:firebase-database:9.0.0'
@@ -89,6 +91,7 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
 
     //Gson
     compile 'com.google.code.gson:gson:2.4'
@@ -105,7 +108,8 @@ dependencies {
     //Constriant layout
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
 
-    // library for MVP
+    // MVP
     compile 'com.hannesdorfmann.mosby:mvp:2.0.1'
     compile 'com.hannesdorfmann.mosby:viewstate:2.0.1' // optional viewstate feature
+
 }
